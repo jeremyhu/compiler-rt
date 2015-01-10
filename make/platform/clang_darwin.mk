@@ -17,8 +17,7 @@ CheckArches = \
     result=""; \
     if [ "X$(3)" != X ]; then \
       for arch in $(1); do \
-        if $(LD) -v 2>&1 | grep "configured to support" \
-             | tr ' ' '\n' | grep "^$$arch$$" >/dev/null 2>/dev/null; then \
+        if ( $(LD) -v 2>&1 | grep "configured to support" | tr ' ' '\n' | grep "^$$arch$$" >/dev/null 2>/dev/null ) || (! ( $(LD) -v 2>&1 | grep -q "configured to support" ) && test "$$arch" = "i386" -o "$$arch" = "x86_64" -o "$$arch" = "ppc" -o "$$arch" = "ppc64" ); then \
           if $(CC) -arch $$arch \
             -integrated-as \
             $(ProjSrcRoot)/make/platform/clang_darwin_test_input.c \
