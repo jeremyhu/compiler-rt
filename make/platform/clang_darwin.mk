@@ -25,6 +25,8 @@ CheckArches = \
           if $(LD) -v 2>&1 | grep "configured to support" \
              | tr ' ' '\n' | grep "^$$arch$$" >/dev/null 2>/dev/null; then \
             result="$$result$$arch "; \
+          elif ! ( $(LD) -v 2>&1 | grep -q "configured to support" ) && test "$$arch" = "i386" -o "$$arch" = "x86_64" -o "$$arch" = "ppc" -o "$$arch" = "ppc64" ; then \
+            result="$$result$$arch "; \
           else \
             printf 1>&2 \
             "warning: clang_darwin.mk: dropping arch '$$arch' from lib '$(2)'";\
