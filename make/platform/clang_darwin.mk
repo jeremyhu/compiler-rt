@@ -97,11 +97,11 @@ UniversalArchs.ios += $(call CheckArches,armv7 arm64,ios,$(IOS_SDK))
 # Configuration for targeting OSX. These functions may not be in libSystem
 # so we should provide our own.
 Configs += osx
-UniversalArchs.osx := $(call CheckArches,ppc i386 x86_64 x86_64h,osx,$(OSX_SDK))
+UniversalArchs.osx := $(call CheckArches,ppc i386 x86_64,osx,$(OSX_SDK))
 
 # Configuration for use with kernel/kexts.
 Configs += cc_kext
-UniversalArchs.cc_kext := $(call CheckArches,ppc i386 x86_64 x86_64h,cc_kext,$(OSX_SDK))
+UniversalArchs.cc_kext := $(call CheckArches,ppc i386 x86_64,cc_kext,$(OSX_SDK))
 UniversalArchs.cc_kext += $(call CheckArches,armv7 arm64,cc_kext,$(IOS_SDK))
 
 # Configuration for use with kernel/kexts for iOS 5.0 and earlier (which used 
@@ -113,20 +113,20 @@ UniversalArchs.cc_kext_ios5 += $(call CheckArches,armv7,cc_kext_ios5,$(IOS_SDK))
 
 # Configurations which define the profiling support functions.
 Configs += profile_osx
-UniversalArchs.profile_osx := $(call CheckArches,ppc i386 x86_64 x86_64h,profile_osx,$(OSX_SDK))
+UniversalArchs.profile_osx := $(call CheckArches,ppc i386 x86_64,profile_osx,$(OSX_SDK))
 Configs += profile_ios
 UniversalArchs.profile_ios := $(call CheckArches,i386 x86_64,profile_ios,$(IOSSIM_SDK))
 UniversalArchs.profile_ios += $(call CheckArches,armv7 arm64,profile_ios,$(IOS_SDK))
 
 # Configurations which define the ASAN support functions.
 Configs += asan_osx_dynamic
-UniversalArchs.asan_osx_dynamic := $(call CheckArches,i386 x86_64 x86_64h,asan_osx_dynamic,$(OSX_SDK))
+UniversalArchs.asan_osx_dynamic := $(call CheckArches,i386 x86_64,asan_osx_dynamic,$(OSX_SDK))
 
 Configs += asan_iossim_dynamic
 UniversalArchs.asan_iossim_dynamic := $(call CheckArches,i386 x86_64,asan_iossim_dynamic,$(IOSSIM_SDK))
 
 Configs += ubsan_osx_dynamic
-UniversalArchs.ubsan_osx_dynamic := $(call CheckArches,i386 x86_64 x86_64h,ubsan_osx_dynamic,$(OSX_SDK))
+UniversalArchs.ubsan_osx_dynamic := $(call CheckArches,i386 x86_64,ubsan_osx_dynamic,$(OSX_SDK))
 
 Configs += ubsan_iossim_dynamic
 UniversalArchs.ubsan_iossim_dynamic := $(call CheckArches,i386 x86_64,ubsan_iossim_dynamic,$(IOSSIM_SDK))
