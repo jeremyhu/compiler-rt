@@ -94,11 +94,11 @@ UniversalArchs.ios += $(call CheckArches,armv7 arm64,ios,$(IOS_SDK))
 # Configuration for targeting OSX. These functions may not be in libSystem
 # so we should provide our own.
 Configs += osx
-UniversalArchs.osx := $(call CheckArches,ppc i386 x86_64 x86_64h,osx,$(OSX_SDK))
+UniversalArchs.osx := $(call CheckArches,ppc i386 x86_64,osx,$(OSX_SDK))
 
 # Configuration for use with kernel/kexts.
 Configs += cc_kext
-UniversalArchs.cc_kext := $(call CheckArches,ppc i386 x86_64 x86_64h,cc_kext,$(OSX_SDK))
+UniversalArchs.cc_kext := $(call CheckArches,ppc i386 x86_64,cc_kext,$(OSX_SDK))
 
 # Configuration for use with iOS kernel/kexts
 Configs += cc_kext_ios
