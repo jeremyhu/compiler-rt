@@ -49,6 +49,10 @@ XCRunSdkPath = \
     result=`xcrun --sdk $(1).internal --show-sdk-path 2> /dev/null`; \
     if [ "$$?" != "0" ]; then \
       result=`xcrun --sdk $(1) --show-sdk-path 2> /dev/null`; \
+      if [ "$$?" != "0" ]; then \
+        result=`xcodebuild -sdk $(1) -version 2> /dev/null \
+                | sed -n 's/^Path: \(..*\)$$/\1/p'`; \
+      fi; \
       if [ "$$?" != "0" ]; then result=""; fi; \
     fi; \
     echo $$result)
