@@ -23,6 +23,14 @@
 #include "sanitizer_common/sanitizer_stackdepot.h"
 #include "sanitizer_common/sanitizer_symbolizer.h"
 
+// Apple CrashReporter support.
+#ifdef __APPLE__
+extern "C" {
+static char *__crashreporter_info__ __attribute__((__used__)) = 0;
+asm (".desc ___crashreporter_info__, 0x10");
+}
+#endif
+
 namespace __asan {
 
 // -------------------- User-specified callbacks ----------------- {{{1
@@ -45,6 +53,16 @@ static bool report_happened = false;
 static ReportData report_data = {};
 
 void AppendToErrorMessageBuffer(const char *buffer) {
+#if __APPLE__
+  // For the Apple CrashReporter support: Always store reports into buffer.
+  if (!error_message_buffer) {
+    error_message_buffer_size = 1 << 16;
+    error_message_buffer =
+        (char*)MmapOrDie(error_message_buffer_size, __func__);
+    error_message_buffer_pos = 0;
+  }
+#endif
+
   if (error_message_buffer) {
     uptr length = internal_strlen(buffer);
     CHECK_GE(error_message_buffer_size, error_message_buffer_pos);
@@ -663,6 +681,14 @@ class ScopedInErrorReport {
     // Print memory stats.
     if (flags()->print_stats)
       __asan_print_accumulated_stats();
+
+#ifdef __APPLE__
+    if (flags()->abort_on_error) {
+      __crashreporter_info__ = internal_strdup(error_message_buffer);
+      RemoveANSIEscapeSequencesFromString(__crashreporter_info__);
+    }
+#endif
+
     if (error_report_callback) {
       error_report_callback(error_message_buffer);
     }
