@@ -160,6 +160,7 @@ void SetLowLevelAllocateCallback(LowLevelAllocateCallback callback);
 // IO
 void RawWrite(const char *buffer);
 bool ColorizeReports();
+void RemoveANSIEscapeSequencesFromString(char *buffer);
 void Printf(const char *format, ...);
 void Report(const char *format, ...);
 void SetPrintfAndReportCallback(void (*callback)(const char *));
