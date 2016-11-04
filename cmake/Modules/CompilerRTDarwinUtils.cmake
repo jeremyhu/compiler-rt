@@ -1,3 +1,4 @@
+include(BuiltinTests)
 include(CMakeParseArguments)
 
 # On OS X SDKs can be installed anywhere on the base system and xcode-select can

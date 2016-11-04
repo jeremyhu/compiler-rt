@@ -1,3 +1,4 @@
+include(BuiltinTests)
 include(CMakePushCheckState)
 include(CheckSymbolExists)
 
