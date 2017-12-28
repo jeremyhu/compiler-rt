@@ -21,6 +21,12 @@
 #include <tuple>
 #include <unistd.h>
 
+#ifdef __APPLE__
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0x1000000
+#endif
+#endif
+
 namespace __xray {
 
 #if SANITIZER_LINUX

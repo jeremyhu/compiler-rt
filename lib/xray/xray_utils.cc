@@ -25,6 +25,12 @@
 #include <unistd.h>
 #include <utility>
 
+#ifdef __APPLE__
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0x1000000
+#endif
+#endif
+
 namespace __xray {
 
 void printToStdErr(const char *Buffer) XRAY_NEVER_INSTRUMENT {
