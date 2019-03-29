@@ -15,8 +15,11 @@
 
 #ifdef __APPLE__
 
+#include <AvailabilityMacros.h>
 #include <TargetConditionals.h>
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
 #include <dispatch/dispatch.h>
+#endif
 #include <dlfcn.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -25,7 +28,9 @@
 
 /* These three variables hold the host's OS version. */
 static int32_t GlobalMajor, GlobalMinor, GlobalSubminor;
-static dispatch_once_t DispatchOnceCounter;
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
+ static dispatch_once_t DispatchOnceCounter;
+#endif
 
 /* We can't include <CoreFoundation/CoreFoundation.h> directly from here, so
  * just forward declare everything that we need from it. */
@@ -205,7 +210,13 @@ Fail:
 
 int32_t __isOSVersionAtLeast(int32_t Major, int32_t Minor, int32_t Subminor) {
   /* Populate the global version variables, if they haven't already. */
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
   dispatch_once_f(&DispatchOnceCounter, NULL, parseSystemVersionPList);
+#else
+  /* expensive procedure, only do once. GlobalMajor will not be 0 once run. */
+  if (GlobalMajor == 0)
+    parseSystemVersionPList(NULL);
+#endif
 
   if (Major < GlobalMajor)
     return 1;
